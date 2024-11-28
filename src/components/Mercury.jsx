@@ -15,15 +15,23 @@ const Mercury = ({ distance, speed, tilt }) => {
     }
   );
 
-  useFrame(() => {
-    orbitRef.current.rotation.y += speed;
+  useFrame(({ clock }) => {
+    const elapsedTime = clock.getElapsedTime();
+    const angle = elapsedTime * speed;
+
+    // Position Mercury in its orbit
+    const x = distance * Math.cos(angle);
+    const z = distance * Math.sin(angle);
+    orbitRef.current.position.set(x, 0, z);
+
+    // Rotate Mercury on its own axis
     planetRef.current.rotation.y += 0.01;
   });
 
   return (
     <group ref={orbitRef}>
       <group rotation={[tilt, 0, 0]}>
-        <Sphere args={[0.5, 32, 32]} position={[distance, 0, 0]} ref={planetRef}>
+        <Sphere args={[0.5, 32, 32]} ref={planetRef}>
           <meshStandardMaterial attach="material" map={mercuryTexture} metalness={0.3} />
         </Sphere>
       </group>
@@ -32,3 +40,4 @@ const Mercury = ({ distance, speed, tilt }) => {
 };
 
 export default Mercury;
+

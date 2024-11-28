@@ -1,17 +1,18 @@
-import { useFrame, useThree } from '@react-three/fiber';
 import React, { useRef, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import fragments from '../shader/Fragments.glsl';
-import vertex from '../shader/Vertex.glsl';
 import vertexSun from '../shaderSun/VertexSun.glsl';
 import fragmentsSun from '../shaderSun/FragmentsSun.glsl';
+import vertex from '../shader/Vertex.glsl';
+import fragments from '../shader/Fragments.glsl';
 
 const Sun = () => {
   const meshRef = useRef();
-  const { gl, scene, size } = useThree();
+  const { gl, size } = useThree();
   const renderTarget = new THREE.WebGLCubeRenderTarget(256, { format: THREE.RGBAFormat, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
   const cubeCamera = useRef();
   const perlinMaterial = useRef();
+  const tempScene = useRef(new THREE.Scene()); // Separate scene for cube camera rendering
 
   useEffect(() => {
     perlinMaterial.current = new THREE.ShaderMaterial({
@@ -24,9 +25,13 @@ const Sun = () => {
       side: THREE.DoubleSide,
     });
 
+    // Temporary sphere in a separate scene for Perlin noise texture
+    const tempSphere = new THREE.Mesh(new THREE.SphereGeometry(2, 32, 32), perlinMaterial.current);
+    tempScene.current.add(tempSphere);
+
     cubeCamera.current = new THREE.CubeCamera(1, 1000, renderTarget);
-    scene.add(cubeCamera.current);
-  }, [scene, size]);
+    tempScene.current.add(cubeCamera.current);
+  }, [size]);
 
   useFrame(({ clock }) => {
     if (meshRef.current && cubeCamera.current) {
@@ -43,29 +48,27 @@ const Sun = () => {
         meshRef.current.material.uniforms.resolution.value.set(size.width, size.height, 1.0, 1.0);
       }
 
-      // Render the cube camera for the Perlin texture
-      cubeCamera.current.update(gl, scene);
-      console.log('Updated Cube Texture:', renderTarget.texture);
+      // Render the cube camera for the Perlin texture in a separate scene
+      cubeCamera.current.update(gl, tempScene.current);
 
       // Update the Perlin texture uniform in the main material
       if (meshRef.current.material.uniforms.uPerlin) {
         meshRef.current.material.uniforms.uPerlin.value = renderTarget.texture;
       }
 
+      // Debugging outputs
       console.log('uPerlin Uniform:', meshRef.current.material.uniforms.uPerlin.value);
-      console.log('Cube Texture:', renderTarget.texture);
       console.log('Elapsed Time:', elapsedTime);
-      console.log('Main Material Uniforms:', meshRef.current.material.uniforms);
     }
   });
 
   return (
     <>
-      <mesh material={perlinMaterial.current} visible={false}>
+      <mesh material={perlinMaterial.current} visible={false} castShadow={false} receiveShadow={false}>
         <sphereGeometry args={[2, 32, 32]} />
       </mesh>
 
-      <mesh ref={meshRef}>
+      <mesh ref={meshRef} castShadow={false} receiveShadow={false}>
         <sphereGeometry args={[2, 32, 32]} />
         <shaderMaterial
           attach="material"
@@ -83,3 +86,4 @@ const Sun = () => {
 };
 
 export default Sun;
+

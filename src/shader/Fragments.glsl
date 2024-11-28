@@ -120,7 +120,7 @@ float fbm(vec4 p) {
 }
 
 void main() {
-  vec4 p = vec4(vPosition * 3.0, time * 0.05);
+  vec4 p = vec4(vPosition * 3.0, time * 0.001);
   float noisy = fbm(p);
   vec4 p1 = vec4(vPosition * 2.0, time * 0.05);
   float spots = max(snoise(p1), 0.0);
