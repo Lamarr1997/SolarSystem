@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Mercury = ({ distance, speed, tilt }) => {
+const Mercury = ({ distance, speed, tilt, onClick }) => {
   const planetRef = useRef();
   const orbitRef = useRef();
 
@@ -29,7 +29,7 @@ const Mercury = ({ distance, speed, tilt }) => {
   });
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[0.5, 32, 32]} ref={planetRef}>
           <meshStandardMaterial attach="material" map={mercuryTexture} metalness={0.3} />
@@ -40,4 +40,3 @@ const Mercury = ({ distance, speed, tilt }) => {
 };
 
 export default Mercury;
-

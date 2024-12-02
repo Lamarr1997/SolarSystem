@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Mars = ({distance, speed, tilt}) => {
+const Mars = ({distance, speed, tilt, onClick}) => {
   const marsRef = useRef();
   const orbitRef = useRef();
   const marsTexture = useLoader(THREE.TextureLoader, '/textures/mars_1k_color.jpg');
@@ -14,7 +14,7 @@ const Mars = ({distance, speed, tilt}) => {
   })
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[0.5, 32, 32]} position={[distance, 0, 0]} ref={marsRef}>
           <meshStandardMaterial attach="material" map={marsTexture} metalness={0.3} />

@@ -6,7 +6,7 @@ import fragmentsSun from '../shaderSun/FragmentsSun.glsl';
 import vertex from '../shader/Vertex.glsl';
 import fragments from '../shader/Fragments.glsl';
 
-const Sun = () => {
+const Sun = ({ onClick }) => {
   const meshRef = useRef();
   const { gl, size } = useThree();
   const renderTarget = new THREE.WebGLCubeRenderTarget(256, { format: THREE.RGBAFormat, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
@@ -68,7 +68,7 @@ const Sun = () => {
         <sphereGeometry args={[2, 32, 32]} />
       </mesh>
 
-      <mesh ref={meshRef} castShadow={false} receiveShadow={false}>
+      <mesh ref={meshRef} castShadow={false} receiveShadow={false} onClick={onClick}>
         <sphereGeometry args={[2, 32, 32]} />
         <shaderMaterial
           attach="material"
@@ -86,4 +86,3 @@ const Sun = () => {
 };
 
 export default Sun;
-

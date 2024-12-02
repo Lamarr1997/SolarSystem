@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Uranus = ({ distance, speed, tilt }) => {
+const Uranus = ({ distance, speed, tilt, onClick }) => {
   const uranusRef = useRef();
   const orbitRef = useRef();
 
@@ -26,7 +26,7 @@ const Uranus = ({ distance, speed, tilt }) => {
   });
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[1, 32, 32]} ref={uranusRef}>
           <meshStandardMaterial attach="material" map={uranusTexture} metalness={0.5} />

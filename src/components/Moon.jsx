@@ -27,7 +27,7 @@ const Moon = ({earthRef, distance, speed, tilt}) => {
     <group ref={orbitRef}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[0.27, 32, 32]} ref={moonRef}>
-          <meshStandardMaterial attach="material" map={moonTexture} metalness={0.5} />
+          <meshStandardMaterial attach="material" map={moonTexture} metalness={0.5} roughness={0.5} emissive={new THREE.Color(0xaaaaaa)} emissiveIntensity={0.5} />
         </Sphere>
     </group>
   </group>

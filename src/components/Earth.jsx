@@ -8,7 +8,7 @@ import AtmosphereFragments from '../earthshader/Atmospherefragments.glsl';
 import * as THREE from 'three';
 import Moon from'./Moon';
 
-const Earth = ({ distance, speed, tilt }) => {
+const Earth = ({ distance, speed, tilt, onClick }) => {
   const earthRef = useRef();
   const cloudsRef = useRef();
   const atmosphereRef = useRef();
@@ -36,7 +36,7 @@ const Earth = ({ distance, speed, tilt }) => {
   });
 
   return (
-    <group>
+    <group onClick={onClick}>
       <group ref={earthRef} rotation={[tilt, 0, 0]}>
         <mesh>
           <sphereGeometry args={[1, 32, 32]} />

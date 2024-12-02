@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Venus = ({distance, speed, tilt}) => {
+const Venus = ({distance, speed, tilt, onClick}) => {
   const orbitRef = useRef();
   const planetRef = useRef();
 
@@ -15,7 +15,7 @@ const Venus = ({distance, speed, tilt}) => {
   })
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[0.5, 32, 32]} position={[distance, 0, 0]} ref={planetRef}>
           <meshStandardMaterial attach="material" map={venusTexture} metalness={0.3} />

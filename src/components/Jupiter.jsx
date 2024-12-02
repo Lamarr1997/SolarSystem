@@ -3,7 +3,7 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import * as THREE from 'three';
 
-const Jupiter = ({ distance, speed, tilt }) => {
+const Jupiter = ({ distance, speed, tilt, onClick }) => {
   const planetRef = useRef();
   const orbitRef = useRef();
 
@@ -25,7 +25,7 @@ const Jupiter = ({ distance, speed, tilt }) => {
   });
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <mesh ref={planetRef}>
           <sphereGeometry args={[1, 32, 32]} />
@@ -37,4 +37,3 @@ const Jupiter = ({ distance, speed, tilt }) => {
 };
 
 export default Jupiter;
-

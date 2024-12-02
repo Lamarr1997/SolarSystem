@@ -4,7 +4,7 @@ import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
 
-const Neptune = ({ distance, speed, tilt }) => {
+const Neptune = ({ distance, speed, tilt, onClick }) => {
   const orbitRef = useRef();
   const neptuneRef = useRef();
   const neptuneTexture = useLoader(THREE.TextureLoader, '/textures/neptunemap.jpg');
@@ -23,7 +23,7 @@ const Neptune = ({ distance, speed, tilt }) => {
   })
 
   return (
-    <group ref={orbitRef}>
+    <group ref={orbitRef} onClick={onClick}>
       <group rotation={[tilt, 0, 0]}>
         <Sphere args={[1, 32, 32]} ref={neptuneRef}>
           <meshStandardMaterial attach="material" map={neptuneTexture} metalness={0.5} />
