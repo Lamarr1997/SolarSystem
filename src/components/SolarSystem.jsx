@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import Sun from './Sun';
 import Mercury from './Mercury';
@@ -139,11 +140,15 @@ const SolarSystem = () => {
           <Sun onClick={() => handlePlanetClick('sun')} />
           <Mercury distance={10} speed={0.01} tilt={0.1} onClick={() => handlePlanetClick('mercury')} />
           <Venus distance={13} speed={0.02} tilt={0.2} onClick={() => handlePlanetClick('venus')} />
-          <Earth distance={17} speed={0.3} tilt={0.1} onClick={() => handlePlanetClick('earth')} />
+          <Earth distance={17} speed={0.02} tilt={0.1} onClick={() => handlePlanetClick('earth')} >
+            <EffectComposer>
+              <Bloom intensity={0.9} luminanceThreshold={0.3} luminanceSmoothing={0.6}/>
+            </EffectComposer>
+          </Earth>
           <Mars distance={19} speed={0.01} tilt={0.3} onClick={() => handlePlanetClick('mars')} />
           <AsteroidBelt innerRadius={20} outerRadius={22} numAsteroids={1000} speed={0.001} />
-          <Jupiter distance={21} speed={0.4} tilt={0.3} onClick={() => handlePlanetClick('jupiter')} />
-          <Saturn distance={23} speed={0.5} tilt={0.4} onClick={() => handlePlanetClick('saturn')} />
+          <Jupiter distance={21} speed={0.02} tilt={0.3} onClick={() => handlePlanetClick('jupiter')} />
+          <Saturn distance={23} speed={0.03} tilt={0.4} onClick={() => handlePlanetClick('saturn')} />
           <Uranus distance={26} speed={10.0} tilt={0.5} onClick={() => handlePlanetClick('uranus')} />
           <Neptune distance={30} speed={0.3} tilt={0.6} onClick={() => handlePlanetClick('neptune')} />
 

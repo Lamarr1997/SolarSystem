@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -29,6 +30,9 @@ const Moon = ({earthRef, distance, speed, tilt}) => {
         <Sphere args={[0.27, 32, 32]} ref={moonRef}>
           <meshStandardMaterial attach="material" map={moonTexture} metalness={0.5} roughness={0.5} emissive={new THREE.Color(0xaaaaaa)} emissiveIntensity={0.5} />
         </Sphere>
+        <EffectComposer>
+          <Bloom intensity={0.6} luminanceThreshold={0.2} luminanceSmoothing={0.6}/>
+        </EffectComposer>
     </group>
   </group>
   )

@@ -16,7 +16,7 @@ float Fresnel(vec3 eyeVector, vec3 worldNormal) {
 
 vec3 brightnessToColor(float b) {
   b *= 0.25;
-  return (vec3(b, b * b, b * b * b * b) / 0.25) * 0.6;
+  return (vec3(b, b * b, b * b * b * b) / 0.25) * 0.8;
 }
 
 float supersun() {
