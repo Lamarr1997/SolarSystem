@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const PopUp = ({ visible, onClose, title, facts }) => {
+const PopUp = ({ visible = false, onClose = () => {}, title = '', facts = [] }) => {
   if (!visible) return null;
+
+  console.log('PopUp Props:', { title, facts }); // Log the props received by PopUp
 
   return (
     <div className="popup">
@@ -16,6 +19,13 @@ const PopUp = ({ visible, onClose, title, facts }) => {
       </div>
     </div>
   );
+};
+
+PopUp.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  facts: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PopUp;

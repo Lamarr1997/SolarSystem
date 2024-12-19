@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, Stars } from '@react-three/drei';
+import { Canvas, useLoader, useThree } from '@react-three/fiber';
+import { OrbitControls, Stars, Plane } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import Sun from './Sun';
@@ -48,6 +48,9 @@ const SolarSystem = () => {
   const saturnOrbitRef = useRef();
   const uranusOrbitRefUnique = useRef();
   const neptuneOrbitRef = useRef();
+  const venusOrbitRef = useRef();
+  const marsOrbitRef = useRef();
+  const jupiterOrbitRef = useRef();
 
   const planetFacts = {
     sun: {
@@ -89,8 +92,10 @@ const SolarSystem = () => {
   };
 
   const handlePlanetClick = (planet) => {
-    setSelectedPlanet(planetFacts[planet]);
+    const selected = planetFacts[planet]
+    setSelectedPlanet(selected);
     setShowPopUp(true);
+    console.log('Selected Planet:', selected);
   };
 
   useEffect(() => {
@@ -109,13 +114,27 @@ const SolarSystem = () => {
     if (neptuneOrbitRef.current) {
       neptuneOrbitRef.current.computeLineDistances();
     }
+    if (venusOrbitRef.current) {
+      venusOrbitRef.current.computeLineDistances();
+    }
+    if (marsOrbitRef.current) {
+      marsOrbitRef.current.computeLineDistances();
+    }
+    if (jupiterOrbitRef.current) {
+      jupiterOrbitRef.current.computeLineDistances();
+    }
   }, []);
 
   const earthOrbitPath = createOrbitPath(17, 100); // Earth's orbit radius and segments
-  const mercuryOrbitPath = createOrbitPath(12, 100); // Mercury's orbit radius and segments
+  const mercuryOrbitPath = createOrbitPath(10, 100); // Mercury's orbit radius and segments
   const saturnOrbitPath = createOrbitPath(23, 100); // Saturn's orbit radius and segments
   const uranusOrbitRefPath = createOrbitPath(26, 100);
   const neptuneOrbitPath = createOrbitPath(30, 100);
+  const venusOrbitPath = createOrbitPath(12, 100);
+  const marsOrbitPath = createOrbitPath(19, 100);
+  const jupiterOrbitPath = createOrbitPath(21, 100);
+
+  const nebulaTexture = useLoader(THREE.TextureLoader, '/textures/purple-nebula.jpg');
 
   return (
     <>
@@ -137,9 +156,15 @@ const SolarSystem = () => {
           <pointLight position={[0, 50, 0]} intensity={10.0} decay={2} distance={2000} />
           <pointLight position={[0, -50, 0]} intensity={10.0} decay={2} distance={2000} />
           <OrbitControls />
+
+          {/* Nebula Background */}
+          <Plane args={[200, 200]} position={[0, 0, -100]}>
+            <meshBasicMaterial attach="material" map={nebulaTexture} transparent={true} opacity={0.2} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.DoubleSide} />
+          </Plane>
+
           <Sun onClick={() => handlePlanetClick('sun')} />
           <Mercury distance={10} speed={0.01} tilt={0.1} onClick={() => handlePlanetClick('mercury')} />
-          <Venus distance={13} speed={0.02} tilt={0.2} onClick={() => handlePlanetClick('venus')} />
+          <Venus distance={12} speed={0.02} tilt={0.2} onClick={() => handlePlanetClick('venus')} />
           <Earth distance={17} speed={0.02} tilt={0.1} onClick={() => handlePlanetClick('earth')} >
             <EffectComposer>
               <Bloom intensity={0.9} luminanceThreshold={0.3} luminanceSmoothing={0.6}/>
@@ -165,9 +190,24 @@ const SolarSystem = () => {
             <lineDashedMaterial attach="material" color="yellow" dashSize={1} gapSize={1} />
           </line>
 
+          {/*Venus Oribit Path */}
+          <line ref={venusOrbitRef} geometry={venusOrbitPath}>
+            <lineDashedMaterial attach="material" color="red" dashSize={1} gapSize={1}/>
+          </line>
+
           {/* Saturn's Orbit Path */}
           <line ref={saturnOrbitRef} geometry={saturnOrbitPath}>
             <lineDashedMaterial attach="material" color="blue" dashSize={1} gapSize={1} />
+          </line>
+
+          {/*Jupiter Orbit Path */}
+          <line ref={jupiterOrbitRef} geometry={jupiterOrbitPath}>
+            <lineDashedMaterial attach="material" color="orange" dashSize={1} gapSize={1}/>
+          </line>
+
+          {/*Mars Orbit Path */}
+          <line ref={marsOrbitRef} geometry={marsOrbitPath}>
+            <lineDashedMaterial attach="material" color="pink" dashSize={1} gapSize={1}/>
           </line>
 
           {/* Uranus's Orbit Path */}
@@ -181,7 +221,7 @@ const SolarSystem = () => {
           </line>
         </FullScreenCanvas>
       </Canvas>
-      {showPopUp && <PopUp visible={showPopUp} onClose={() => setShowPopUp(false)} title={selectedPlanet.title} facts={selectedPlanet.facts} />}
+      {showPopUp && selectedPlanet && <PopUp visible={showPopUp} onClose={() => setShowPopUp(false)} title={selectedPlanet.title} facts={selectedPlanet.facts} />}
     </>
   );
 };

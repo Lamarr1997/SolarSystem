@@ -57,8 +57,8 @@ const Sun = ({ onClick }) => {
       }
 
       // Debugging outputs
-      console.log('uPerlin Uniform:', meshRef.current.material.uniforms.uPerlin.value);
-      console.log('Elapsed Time:', elapsedTime);
+      // console.log('uPerlin Uniform:', meshRef.current.material.uniforms.uPerlin.value);
+      // console.log('Elapsed Time:', elapsedTime);
     }
   });
 

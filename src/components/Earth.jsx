@@ -16,8 +16,8 @@ const Earth = ({ distance, speed, tilt, onClick }) => {
   const earthTexture = useLoader(TextureLoader, '/textures/earthmap1k.jpg');
   const cloudsTexture = useLoader(TextureLoader, '/textures/earthcloudmap.jpg');
 
-  console.log('Earth Texture:', earthTexture);
-  console.log('Clouds Texture:', cloudsTexture);
+  // console.log('Earth Texture:', earthTexture);
+  // console.log('Clouds Texture:', cloudsTexture);
 
   useFrame(({ clock }) => {
     const elapsedTime = clock.getElapsedTime();
