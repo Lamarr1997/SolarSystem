@@ -6,7 +6,7 @@ import fragmentNebula from '../shaderNebula/fragmentNebula.glsl';
 
 const Nebula = () => {
   const particleRef = useRef();
-  const particleCount = 1000; // Increase if necessary for denser effect
+  const particleCount = 500; // Increase if necessary for denser effect
   const particles = useRef(new THREE.BufferGeometry());
   const positions = new Float32Array(particleCount * 3);
 

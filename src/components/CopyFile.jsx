@@ -1,12 +1,6 @@
-{/* Nebula Background */}
-<Plane args={[400, 400]} position={[0, 0, -150]}>
-  <meshBasicMaterial
-    attach="material"
-    map={nebulaTexture}
-    transparent={true}
-    opacity={0.15}
-    blending={THREE.AdditiveBlending}
-    depthWrite={false}
-    side={THREE.DoubleSide}
-  />
-</Plane>
+if (plutoOrbitRef.current) {
+  plutoOrbitRef.current.computeLineDistances();
+  // Rotate the orbit line to match Pluto's tilt
+  const axis = new THREE.Vector3(0, 0, 1);
+  plutoOrbitRef.current.rotateOnAxis(axis, THREE.MathUtils.degToRad(17.16));
+}

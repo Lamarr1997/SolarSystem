@@ -14,6 +14,7 @@ import Uranus from './Uranus';
 import Neptune from './Neptune';
 import Nebula from './Nebula';
 import AsteroidBelt from './Asteroidbelt';
+import Pluto from './Pluto';
 import PopUp from './PopUp';
 
 const FullScreenCanvas = ({ children }) => {
@@ -30,11 +31,18 @@ const FullScreenCanvas = ({ children }) => {
   return <>{children}</>;
 };
 
-const createOrbitPath = (radius, segments) => {
+const createOrbitPath = (radius, segments, tiltAngle = 0) => {
   const points = [];
+  const tiltRad = THREE.MathUtils.degToRad(tiltAngle);
+
   for (let i = 0; i <= segments; i++) {
     const angle = (i / segments) * Math.PI * 2;
-    points.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    // Apply tilt transformation
+    const y = z * Math.sin(tiltRad);
+    const newZ = z * Math.cos(tiltRad);
+    points.push(new THREE.Vector3(x, y, newZ));
   }
   return new THREE.BufferGeometry().setFromPoints(points);
 };
@@ -51,6 +59,7 @@ const SolarSystem = () => {
   const venusOrbitRef = useRef();
   const marsOrbitRef = useRef();
   const jupiterOrbitRef = useRef();
+  const plutoOrbitRef = useRef();
 
   const planetFacts = {
     sun: {
@@ -88,6 +97,10 @@ const SolarSystem = () => {
     neptune: {
       title: "Neptune",
       facts: ["Neptune is the eighth planet from the Sun.", "It has a deep blue color due to methane in its atmosphere.", "Neptune has the strongest winds in the Solar System."]
+    },
+    pluto: {
+      title: "Pluto",
+      facts: ["Basic fact number one", "Basic fact number two", "Basic fact number three"]
     }
   };
 
@@ -123,16 +136,21 @@ const SolarSystem = () => {
     if (jupiterOrbitRef.current) {
       jupiterOrbitRef.current.computeLineDistances();
     }
+    if (plutoOrbitRef.current) {
+      plutoOrbitRef.current.computeLineDistances();
+
+    }
   }, []);
 
-  const earthOrbitPath = createOrbitPath(17, 100); // Earth's orbit radius and segments
+  const earthOrbitPath = createOrbitPath(18, 100); // Earth's orbit radius and segments
   const mercuryOrbitPath = createOrbitPath(10, 100); // Mercury's orbit radius and segments
-  const saturnOrbitPath = createOrbitPath(23, 100); // Saturn's orbit radius and segments
-  const uranusOrbitRefPath = createOrbitPath(26, 100);
-  const neptuneOrbitPath = createOrbitPath(30, 100);
-  const venusOrbitPath = createOrbitPath(12, 100);
-  const marsOrbitPath = createOrbitPath(19, 100);
-  const jupiterOrbitPath = createOrbitPath(21, 100);
+  const saturnOrbitPath = createOrbitPath(30, 100); // Saturn's orbit radius and segments
+  const uranusOrbitRefPath = createOrbitPath(33, 100);
+  const neptuneOrbitPath = createOrbitPath(36, 100);
+  const venusOrbitPath = createOrbitPath(14, 100);
+  const marsOrbitPath = createOrbitPath(22, 100);
+  const jupiterOrbitPath = createOrbitPath(26, 100);
+  const plutoOrbitPath = createOrbitPath(38, 100, 17.16);
 
   const nebulaTexture = useLoader(THREE.TextureLoader, '/textures/purple-nebula.jpg');
 
@@ -164,18 +182,19 @@ const SolarSystem = () => {
 
           <Sun onClick={() => handlePlanetClick('sun')} />
           <Mercury distance={10} speed={0.01} tilt={0.1} onClick={() => handlePlanetClick('mercury')} />
-          <Venus distance={12} speed={0.02} tilt={0.2} onClick={() => handlePlanetClick('venus')} />
-          <Earth distance={17} speed={0.02} tilt={0.1} onClick={() => handlePlanetClick('earth')} >
+          <Venus distance={14} speed={0.02} tilt={0.2} onClick={() => handlePlanetClick('venus')} />
+          <Earth distance={18} speed={0.02} tilt={0.1} onClick={() => handlePlanetClick('earth')} >
             <EffectComposer>
               <Bloom intensity={0.9} luminanceThreshold={0.3} luminanceSmoothing={0.6}/>
             </EffectComposer>
           </Earth>
-          <Mars distance={19} speed={0.01} tilt={0.3} onClick={() => handlePlanetClick('mars')} />
-          <AsteroidBelt innerRadius={20} outerRadius={22} numAsteroids={1000} speed={0.001} />
-          <Jupiter distance={21} speed={0.02} tilt={0.3} onClick={() => handlePlanetClick('jupiter')} />
-          <Saturn distance={23} speed={0.03} tilt={0.4} onClick={() => handlePlanetClick('saturn')} />
-          <Uranus distance={26} speed={10.0} tilt={0.5} onClick={() => handlePlanetClick('uranus')} />
-          <Neptune distance={30} speed={0.3} tilt={0.6} onClick={() => handlePlanetClick('neptune')} />
+          <Mars distance={22} speed={0.01} tilt={0.3} onClick={() => handlePlanetClick('mars')} />
+          <AsteroidBelt innerRadius={23} outerRadius={24.5} numAsteroids={1000} speed={0.001} />
+          <Jupiter distance={26} speed={0.02} tilt={0.3} onClick={() => handlePlanetClick('jupiter')} />
+          <Saturn distance={30} speed={0.03} tilt={0.4} onClick={() => handlePlanetClick('saturn')} />
+          <Uranus distance={33} speed={10.0} tilt={0.5} onClick={() => handlePlanetClick('uranus')} />
+          <Neptune distance={36} speed={0.3} tilt={0.6} onClick={() => handlePlanetClick('neptune')} />
+          <Pluto distance={38} speed={0.05} tilt={0.2} onClick={() => handlePlanetClick('pluto')} />
 
           {/* Interactive Nebula */}
           <Nebula />
@@ -219,6 +238,12 @@ const SolarSystem = () => {
           <line ref={neptuneOrbitRef} geometry={neptuneOrbitPath}>
             <lineDashedMaterial attach="material" color="purple" dashSize={1} gapSize={1} />
           </line>
+
+          {/* Pluto's Orbit Path */}
+          <line ref={plutoOrbitRef} geometry={plutoOrbitPath}>
+            <lineDashedMaterial attach="material" color="#8B4513" dashSize={1} gapSize={1} />
+          </line>
+
         </FullScreenCanvas>
       </Canvas>
       {showPopUp && selectedPlanet && <PopUp visible={showPopUp} onClose={() => setShowPopUp(false)} title={selectedPlanet.title} facts={selectedPlanet.facts} />}
