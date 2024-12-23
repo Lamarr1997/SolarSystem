@@ -1,19 +1,161 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  width: 100%;
-  height: 100%;
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.Canvas-container {
-  background-color: black;
-  position: absolute;
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* App container */
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Content wrapper */
+.content-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Background SVG */
+.background-svg {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  display: block;
+  background-color: #000000;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.86), #000000);
+  z-index: 0;
+}
+
+.title-text {
+  filter: drop-shadow(5px 10px #ffffff);
+  font-weight: bold;
+}
+
+/* Navigation */
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  user-select: none;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
+  background: #ffffff;
+  border-radius: 3px;
+  transform-origin: 4px 0px;
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              opacity 0.55s ease;
+}
+
+.menu-toggle input {
+  position: absolute;
+  width: 40px;
+  height: 32px;
+  top: -7px;
+  left: -5px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+
+.menu-toggle input:checked ~ span:nth-child(2) {
+  transform: rotate(45deg) translate(0, 0);
+}
+
+.menu-toggle input:checked ~ span:nth-child(3) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+.menu-toggle input:checked ~ span:nth-child(4) {
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 80px 30px 30px;
+  background: rgba(0, 0, 0, 0.9);
+  list-style-type: none;
+  width: 250px;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+.menu.menu-open {
+  transform: translateX(0);
+}
+
+.menu li {
+  padding: 15px 0;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.nav-link.active {
+  color: #3b82f6;
+  opacity: 1;
+  font-weight: bold;
+}
+
+/* Main content */
+.main-content {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding-top: 60px;
+}
+
+/* Canvas container */
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
 }
 
 .popup {
