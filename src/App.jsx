@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { NavLink, Routes, Route } from 'react-router-dom';
 import SolarSystem from './components/SolarSystem';
 import About from './components/About';
+import Footer from './components/Footer';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -137,6 +138,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
+      <Footer/>
       </div>
     </div>
   );

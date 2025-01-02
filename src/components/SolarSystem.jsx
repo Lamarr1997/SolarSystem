@@ -100,7 +100,7 @@ const SolarSystem = () => {
     },
     pluto: {
       title: "Pluto",
-      facts: ["Basic fact number one", "Basic fact number two", "Basic fact number three"]
+      facts: ["Pluto is smaller than the moon", "Pluto has a highly elliptical orbit", "Pluto is a dwarf planet"]
     }
   };
 
@@ -153,7 +153,6 @@ const SolarSystem = () => {
   const plutoOrbitPath = createOrbitPath(38, 100, 17.16);
 
   const nebulaTexture = useLoader(THREE.TextureLoader, '/textures/purple-nebula.jpg');
-  const orangeNebulaTexture = useLoader(THREE.TextureLoader, '/textures/orange-nebula.jpg');
 
   return (
     <>
@@ -179,9 +178,6 @@ const SolarSystem = () => {
           {/* Nebula Background */}
           <Plane args={[200, 200]} position={[0, 0, -100]}>
             <meshBasicMaterial attach="material" map={nebulaTexture} transparent={true} opacity={0.2} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.DoubleSide} />
-          </Plane>
-          <Plane args={[200, 200]} position={[0, 0, 100]}>
-            <meshBasicMaterial attach="material" map={orangeNebulaTexture} transparent={true} opacity={0.2} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.DoubleSide} />
           </Plane>
 
           <Sun onClick={() => handlePlanetClick('sun')} />
