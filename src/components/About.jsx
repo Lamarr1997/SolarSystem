@@ -14,7 +14,7 @@ const About = () => {
         <div className='About-author'>
           <h2>Author</h2>
           <img src="textures/lamarrpic.jpg" alt="picture of me" />
-          <p>Im an full-stack web developer specialising in Ruby, JavaScript, CSS and HTML. I created this project for people who are interested in coding and astronomy.</p>
+          <p>Im an full-stack web developer specialising in Ruby, JavaScript, CSS and HTML. I created this project for young people who are interested in coding and astronomy.</p>
         </div>
         <div className='About-contact'>
           <h2>Contact</h2>
